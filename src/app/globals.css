@@ -1,18 +1,19 @@
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 /* ─────────────────────────────────────────
-   ROOT VARIABLES
+   TAILWIND v4 THEME
 ───────────────────────────────────────── */
-:root {
-  --navy:  #0A0E1A;
-  --steel: #1E3A5F;
-  --gold:  #B8962E;
-  --sage:  #7A9E7E;
-  --cream: #EDE8DC;
-  --slate: #141B2D;
+@theme {
+  --color-navy:  #0A0E1A;
+  --color-steel: #1E3A5F;
+  --color-gold:  #B8962E;
+  --color-sage:  #7A9E7E;
+  --color-cream: #EDE8DC;
+  --color-slate: #141B2D;
+
+  --font-display: var(--font-display-next);
+  --font-body:    var(--font-body-next);
+  --font-mono:    var(--font-mono-next);
 }
 
 /* ─────────────────────────────────────────
@@ -31,9 +32,6 @@ html {
   scroll-behavior: smooth;
   background-color: #0A0E1A;
   color: #EDE8DC;
-  font-family: 'Inter', sans-serif;
-  /* Hide default cursor everywhere — 
-     CustomCursor.tsx takes over */
   cursor: none;
 }
 
@@ -41,46 +39,20 @@ body {
   background-color: #0A0E1A;
   min-height: 100vh;
   overflow-x: hidden;
-  /* Prevent white flash on load */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 /* ─────────────────────────────────────────
-   SCROLLBAR STYLING
-   (dark, minimal, matches palette)
+   SCROLLBAR
 ───────────────────────────────────────── */
-::-webkit-scrollbar {
-  width: 4px;
-}
-
-::-webkit-scrollbar-track {
-  background: #0A0E1A;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #1E3A5F;
-  border-radius: 2px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #B8962E;
-}
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #0A0E1A; }
+::-webkit-scrollbar-thumb { background: #1E3A5F; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #B8962E; }
 
 /* ─────────────────────────────────────────
-   TYPOGRAPHY HELPERS
-───────────────────────────────────────── */
-.font-display {
-  font-family: var(--font-display);
-}
-
-.font-mono-custom {
-  font-family: var(--font-mono);
-}
-
-/* ─────────────────────────────────────────
-   SELECTION COLOR
-   (gold highlight when text is selected)
+   SELECTION
 ───────────────────────────────────────── */
 ::selection {
   background-color: #B8962E;
@@ -89,8 +61,6 @@ body {
 
 /* ─────────────────────────────────────────
    SECTION BASE
-   (all sections full viewport height,
-    centered content by default)
 ───────────────────────────────────────── */
 section {
   position: relative;
@@ -101,32 +71,20 @@ section {
 
 /* ─────────────────────────────────────────
    LOADING STATE
-   (locks scroll while globe loads)
 ───────────────────────────────────────── */
 body.is-loading {
   overflow: hidden;
 }
 
 /* ─────────────────────────────────────────
-   GOLD UNDERLINE UTILITY
-   (reusable accent line — used in Contact)
+   UTILITIES
 ───────────────────────────────────────── */
 .gold-rule {
   width: 100%;
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    #B8962E 30%,
-    #B8962E 70%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg, transparent 0%, #B8962E 30%, #B8962E 70%, transparent 100%);
 }
 
-/* ─────────────────────────────────────────
-   HEX PATTERN CONTAINER
-   (ensures texture never bleeds outside section)
-───────────────────────────────────────── */
 .hex-pattern-container {
   position: absolute;
   inset: 0;
@@ -135,37 +93,21 @@ body.is-loading {
 }
 
 /* ─────────────────────────────────────────
-   SMOOTH FADE-IN ANIMATION
-   (base utility — Framer Motion handles
-    most animations but this is fallback)
+   ANIMATIONS
 ───────────────────────────────────────── */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+.fade-in { animation: fadeIn 0.6s ease forwards; }
 
-.fade-in {
-  animation: fadeIn 0.6s ease forwards;
-}
-
-/* ─────────────────────────────────────────
-   GOLD BORDER TRACE ANIMATION
-   (used on headshot in About section)
-───────────────────────────────────────── */
 @keyframes traceRight {
   from { width: 0; }
   to   { width: 100%; }
 }
-
 @keyframes traceDown {
   from { height: 0; }
   to   { height: 100%; }
 }
-
-.trace-right {
-  animation: traceRight 0.8s ease forwards;
-}
-
-.trace-down {
-  animation: traceDown 0.8s ease 0.8s forwards;
-}
+.trace-right { animation: traceRight 0.8s ease forwards; }
+.trace-down  { animation: traceDown 0.8s ease 0.8s forwards; }
