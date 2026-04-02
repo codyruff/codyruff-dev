@@ -1,8 +1,5 @@
 @import "tailwindcss";
 
-/* ─────────────────────────────────────────
-   TAILWIND v4 THEME
-───────────────────────────────────────── */
 @theme {
   --color-navy:  #0A0E1A;
   --color-steel: #1E3A5F;
@@ -16,69 +13,52 @@
   --font-mono:    var(--font-mono-next);
 }
 
-/* ─────────────────────────────────────────
-   BASE RESET
-───────────────────────────────────────── */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* WHY: Wrapping in @layer base gives Tailwind utilities higher cascade priority.
+   In v4, unlayered CSS beats @layer utilities — so any unlayered padding:0 or margin:0
+   silently nukes every px-*, py-*, mx-auto, etc. on your components. */
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: #0A0E1A;
+    color: #EDE8DC;
+    cursor: none;
+  }
+
+  body {
+    background-color: #0A0E1A;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* WHY: section rule also layered — prevents it from overriding z-10, overflow-visible etc. */
+  section {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
 }
 
-/* ─────────────────────────────────────────
-   BASE BODY
-───────────────────────────────────────── */
-html {
-  scroll-behavior: smooth;
-  background-color: #0A0E1A;
-  color: #EDE8DC;
-  cursor: none;
-}
-
-body {
-  background-color: #0A0E1A;
-  min-height: 100vh;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* ─────────────────────────────────────────
-   SCROLLBAR
-───────────────────────────────────────── */
+/* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: #0A0E1A; }
 ::-webkit-scrollbar-thumb { background: #1E3A5F; border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: #B8962E; }
 
-/* ─────────────────────────────────────────
-   SELECTION
-───────────────────────────────────────── */
 ::selection {
   background-color: #B8962E;
   color: #0A0E1A;
 }
 
-/* ─────────────────────────────────────────
-   SECTION BASE
-───────────────────────────────────────── */
-section {
-  position: relative;
-  width: 100%;
-  min-height: 100vh;
-  overflow: hidden;
-}
+body.is-loading { overflow: hidden; }
 
-/* ─────────────────────────────────────────
-   LOADING STATE
-───────────────────────────────────────── */
-body.is-loading {
-  overflow: hidden;
-}
-
-/* ─────────────────────────────────────────
-   UTILITIES
-───────────────────────────────────────── */
 .gold-rule {
   width: 100%;
   height: 1px;
@@ -92,22 +72,8 @@ body.is-loading {
   z-index: 0;
 }
 
-/* ─────────────────────────────────────────
-   ANIMATIONS
-───────────────────────────────────────── */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 .fade-in { animation: fadeIn 0.6s ease forwards; }
-
-@keyframes traceRight {
-  from { width: 0; }
-  to   { width: 100%; }
-}
-@keyframes traceDown {
-  from { height: 0; }
-  to   { height: 100%; }
-}
-.trace-right { animation: traceRight 0.8s ease forwards; }
-.trace-down  { animation: traceDown 0.8s ease 0.8s forwards; }

@@ -1,131 +1,95 @@
+// sections/Hero.tsx
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import AnimatedText from "@/components/ui/AnimatedText";
-import HexPattern from "@/components/ui/HexPattern";
-import { SmokeBackground } from "@/components/ui/SmokeBackground";
+import { motion } from "framer-motion";
+
+const NAME = "CODY RUFF";
+const SUBTITLE = "Security Engineer · Builder · Stonehill '26";
 
 export default function Hero() {
-  const ref = useRef<HTMLElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-
-  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
+  const words = NAME.split(" ");
 
   return (
+    // WHY: bg-transparent exposes the fixed BackgroundPaths canvas below — no competing fill
+    // min-h-screen ensures the section takes the full first viewport
+    // z-10 stacks hero content above the z-0 fixed canvas
     <section
-      ref={ref}
-      className="relative w-full min-h-screen flex items-center justify-start overflow-hidden bg-navy"
+      id="hero"
+      className="relative z-10 min-h-screen w-full flex items-center justify-center overflow-visible bg-transparent"
     >
-      {/* ── WebGL Smoke Background ── */}
-      <div className="absolute inset-0 pointer-events-none">
-        <SmokeBackground smokeColor="#1E3A5F" />
-      </div>
-
-      {/* ── Hex pattern overlay ── */}
-      <HexPattern opacity={0.06} />
-
-      {/* ── Tunnel arch vignette ── */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `radial-gradient(
-            ellipse 55% 80% at 50% 110%,
-            rgba(30, 58, 95, 0.6) 0%,
-            rgba(20, 27, 45, 0.3) 40%,
-            transparent 70%
-          )`,
-        }}
-      />
-
-      {/* ── Edge vignette ── */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `radial-gradient(
-            ellipse 90% 90% at 50% 50%,
-            transparent 55%,
-            rgba(10, 14, 26, 0.85) 100%
-          )`,
-        }}
-      />
-
-      {/* ── Main content ── */}
-      <motion.div
-        style={{ y: contentY }}
-        className="relative z-10 px-8 md:px-16 lg:px-24 pt-8"
-      >
-        {/* Eyebrow */}
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, duration: 0.6 }}
-          className="font-mono text-gold text-xs tracking-[0.35em] uppercase mb-6"
-        >
-          Security Engineer · Raytheon
-        </motion.p>
-
-        {/* CODY — solid fill */}
-        <AnimatedText
-          text="CODY"
-          as="h1"
-          className="font-display text-cream leading-none text-[clamp(72px,14vw,180px)]"
-          stagger={0.08}
-          delay={0.3}
-        />
-
-        {/* RUFF — outlined/ghost */}
-        <AnimatedText
-          text="RUFF"
-          as="h1"
-          className="font-display leading-none text-[clamp(72px,14vw,180px)]"
-          letterClassName="[-webkit-text-stroke:1px_rgba(237,232,220,0.4)] text-transparent"
-          stagger={0.08}
-          delay={0.55}
-        />
-
-        {/* Subtitle */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.1, duration: 0.7 }}
-          className="mt-8 flex items-center gap-4"
-        >
-          <div className="w-8 h-px bg-gold opacity-60" />
-          <p className="font-body text-cream text-base md:text-lg tracking-wide opacity-70">
-            Builder · Stonehill &apos;26 · D1 Athlete
-          </p>
-        </motion.div>
-
-        {/* Scroll hint */}
+      <div className="container mx-auto px-6 text-center">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 2, duration: 1 }}
-          className="mt-16 flex flex-col items-start gap-2"
+          transition={{ duration: 1.5 }}
+          className="max-w-5xl mx-auto"
         >
-          <p className="font-mono text-xs text-cream opacity-30 tracking-[0.2em] uppercase">
-            Scroll
-          </p>
-          <motion.div
-            className="w-px h-12 bg-gold opacity-40 origin-top"
-            animate={{ scaleY: [0, 1, 0] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </motion.div>
-      </motion.div>
+          {/* NAME — Barlow Condensed, letter-by-letter spring stagger */}
+          <h1 className="font-display text-7xl sm:text-8xl md:text-[10rem] lg:text-[12rem] font-bold tracking-tighter leading-none mb-6">
+            {words.map((word, wordIndex) => (
+              <span key={wordIndex} className="inline-block mr-6 last:mr-0">
+                {word.split("").map((letter, letterIndex) => (
+                  <motion.span
+                    key={`${wordIndex}-${letterIndex}`}
+                    initial={{ y: 80, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{
+                      // WHY: delay staggers per letter across both words — deliberate, not fast
+                      delay: 0.4 + wordIndex * 0.15 + letterIndex * 0.04,
+                      type: "spring",
+                      stiffness: 120,
+                      damping: 22,
+                    }}
+                    className="inline-block text-transparent bg-clip-text bg-gradient-to-b from-cream to-cream/70"
+                  >
+                    {letter}
+                  </motion.span>
+                ))}
+              </span>
+            ))}
+          </h1>
 
-      {/* ── Bottom fade into next section ── */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
-        style={{
-          background: "linear-gradient(to bottom, transparent, #0A0E1A)",
-        }}
-      />
+          {/* SUBTITLE — fades in after name completes */}
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              // WHY: 1.4s delay ensures subtitle never competes visually with name stagger
+              delay: 1.4,
+              duration: 0.9,
+              ease: "easeOut",
+            }}
+            className="font-mono text-sm sm:text-base md:text-lg tracking-[0.25em] text-gold/80 uppercase mb-16"
+          >
+            {SUBTITLE}
+          </motion.p>
+
+          {/* SCROLL CUE */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 2.2, duration: 1 }}
+            className="flex flex-col items-center gap-2"
+          >
+            {/* WHY: animated vertical line reads as "scroll down" without any text label */}
+            <motion.div
+              animate={{
+                scaleY: [0.4, 1, 0.4],
+                opacity: [0.3, 0.8, 0.3],
+              }}
+              transition={{
+                duration: 2.4,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="w-px h-12 bg-gradient-to-b from-gold/60 to-transparent origin-top"
+            />
+            <span className="font-mono text-[10px] tracking-[0.3em] text-gold/40 uppercase">
+              Scroll
+            </span>
+          </motion.div>
+        </motion.div>
+      </div>
     </section>
   );
 }

@@ -113,7 +113,7 @@ export default function LoadingGlobe({ onComplete }: LoadingGlobeProps) {
         glowColor:   [0.07, 0.09, 0.10],  // dark navy glow
         markers: MARKERS,
         arcs: ARCS,
-        arcColor:   ["rgba(184,150,46,0.9)", "rgba(184,150,46,0.1)"],
+        arcColor:   ["rgba(184,150,46,0.9)", "rgba(184, 150, 46, 0.9)"],
         arcWidth:    0.8,
         arcHeight:   0.3,
         opacity:     0.8,
