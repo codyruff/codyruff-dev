@@ -6,9 +6,9 @@ import { motion, useInView, type Variants } from "framer-motion";
 import Image from "next/image";
 
 const BIO = [
-  "CS major at Stonehill, incoming Security Engineer at Raytheon. Played D1 tight end for four years — a position built on doing the work no one applauds.",
-  "I don't talk about what I'm going to do. I build it.",
-  "Currently focused on cloud security, secure application design, and making systems that hold under pressure.",
+  "CS major at Stonehill, incoming Security Engineer at Raytheon, and played division 1 football for 4 years. Something I live by is:",
+  "How you do anything is how you do everything.",
+  "Currently focused on cloud security, secure application design, and making systems that are highly availabe.",
 ];
 
 const STAGGER_CONTAINER: Variants = {
